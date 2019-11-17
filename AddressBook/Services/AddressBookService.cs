@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AddressBook.Enums;
+using System.Linq;
 
 namespace Tests
 {
@@ -13,7 +14,8 @@ namespace Tests
 
         public int GetNumberOfMales()
         {
-            return 0;
+            var addressBooks = getAddressBookService.GetAddressBooks();
+            return addressBooks.Count(x => x.Gender == GenderType.Male);
         }
     }
 }
