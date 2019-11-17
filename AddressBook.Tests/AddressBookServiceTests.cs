@@ -10,6 +10,7 @@ namespace Tests
     public class AddressBookServiceTests
     {
         private List<Person> people;
+        private AddressBookService addressBookService;
         private const int DanaLaneYearsOld = 2;
 
         [SetUp]
@@ -21,15 +22,15 @@ namespace Tests
                    new Person { Name = "Dana Lane", Gender = GenderType.Female, DateOfBirth = DateTime.Now.AddYears(-DanaLaneYearsOld)},
                    new Person { Name = "Chuk jackson", Gender = GenderType.Male, DateOfBirth = DateTime.Now}
             };
+
+            var service = new Mock<IGetAddressBook>();
+            service.Setup(x => x.GetAddressBooks()).Returns(people);
+            addressBookService = new AddressBookService(service.Object);
         }
 
         [Test]
         public void HowManyMalesAreInAddressBook()
         {
-            var service = new Mock<IGetAddressBook>();
-            service.Setup(x => x.GetAddressBooks()).Returns(people);
-            var addressBookService = new AddressBookService(service.Object);
-
             var numberOfMales = addressBookService.GetNumberOfMales();
 
             numberOfMales.Should().Be(3);
@@ -38,10 +39,6 @@ namespace Tests
         [Test]
         public void WhoIsTheOldest()
         {            
-            var service = new Mock<IGetAddressBook>();
-            service.Setup(x => x.GetAddressBooks()).Returns(people);
-            var addressBookService = new AddressBookService(service.Object);
-
             var person = addressBookService.OldestPerson();
 
             person.Name.Should().BeEquivalentTo("Dana Lane");
@@ -50,10 +47,6 @@ namespace Tests
         [Test]
         public void HowManyDaysOlder()
         {            
-            var service = new Mock<IGetAddressBook>();
-            service.Setup(x => x.GetAddressBooks()).Returns(people);
-            var addressBookService = new AddressBookService(service.Object);
-
             var days = addressBookService.HowManyDaysOlder("Dana Lane", "Zee A");
 
             days.Should().Be(365 * DanaLaneYearsOld - 1);
