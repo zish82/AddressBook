@@ -33,5 +33,17 @@ namespace Tests
 
             numberOfMales.Should().Be(3);
         }
+
+        [Test]
+        public void WhoIsTheOldest()
+        {            
+            var service = new Mock<IGetAddressBook>();
+            service.Setup(x => x.GetAddressBooks()).Returns(people);
+            var addressBookService = new AddressBookService(service.Object);
+
+            var person = addressBookService.OldestPerson();
+
+            person.Name.Should().BeEquivalentTo("Dana Lane");
+        }
     }
 }

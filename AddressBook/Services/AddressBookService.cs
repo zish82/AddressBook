@@ -1,4 +1,5 @@
 ﻿using AddressBook.Enums;
+using System;
 using System.Linq;
 
 namespace Tests
@@ -16,6 +17,12 @@ namespace Tests
         {
             var addressBooks = getAddressBookService.GetAddressBooks();
             return addressBooks.Count(x => x.Gender == GenderType.Male);
+        }
+
+        public Person OldestPerson()
+        {
+            var addressBooks = getAddressBookService.GetAddressBooks();
+            return addressBooks.OrderBy(x => x.DateOfBirth).First();
         }
     }
 }
